@@ -14,6 +14,8 @@ const constants = require('./config/constants.json');
 const log4js = require('log4js');
 const logger = log4js.getLogger('EximNetwork');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const { log } = require('console');
 
 const host = process.env.HOST || constants.host;
 const port = process.env.PORT || constants.port;
@@ -53,15 +55,21 @@ async function main() {
         app.post('/createUser', async function (req, res) {
             //create user
             try {
-                const { userID, userName, userEmail, userRole, userOrg } = req.body;
-                // console.log(req.body);
-                let result = await contract.evaluateTransaction('CreateUser', userID, userName, userEmail, userRole, userOrg);
-                await contract.submitTransaction('CreateUser', userID, userName, userEmail, userRole, userOrg);
+                const { userID, userName, userEmail, userRole, userOrg, password } = req.body;
+
+                //bcrypt password
+                const salt = await bcrypt.genSalt(10);
+                const hashedPassword = await bcrypt.hash(password, salt);
+
+                // // console.log(req.body);
+                let result = await contract.evaluateTransaction('CreateUser', userID, userName, userEmail, userRole, userOrg, hashedPassword);
+                await contract.submitTransaction('CreateUser', userID, userName, userEmail, userRole, userOrg, hashedPassword); 
                 res.send(result.toString());
             }catch(error){
                 res.status(400).send(error.toString());
             }
         });
+
 
         app.get('/readUser', async function (req, res) {
             //read user

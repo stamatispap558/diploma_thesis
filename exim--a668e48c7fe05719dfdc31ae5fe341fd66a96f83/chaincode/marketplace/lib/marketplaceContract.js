@@ -4,7 +4,7 @@ const { Contract } = require('fabric-contract-api');
 
 class MarketplaceContract extends Contract {
 
-    async CreateUser(ctx, userID, userName, userEmail, userRole, userOrg) {
+    async CreateUser(ctx, userID, userName, userEmail, userRole, userOrg, hashedPassword) {
         const findUser = await this.IsUserExist(ctx, userID);
         if (findUser) {
             throw new Error(`User ${userID} already exist`);
@@ -15,7 +15,8 @@ class MarketplaceContract extends Contract {
             UserEmail: userEmail,
             UserRole: userRole,
             UserOrg: userOrg,
-            UserStatus: "Inactive"
+            // UserStatus: "Inactive"
+            HashedPassword: hashedPassword
         };
 
         await ctx.stub.putState(userID, Buffer.from(JSON.stringify(user)));
