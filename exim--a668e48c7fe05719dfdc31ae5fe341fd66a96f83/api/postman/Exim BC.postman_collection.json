@@ -1,0 +1,603 @@
+{
+	"info": {
+		"_postman_id": "353beb8a-29dc-4eeb-91ac-8337b0843cff",
+		"name": "Exim BC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18237900"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userID\" : \"user1\",\n    \"userName\" : \"Masudul\",\n    \"userEmail\" : \"Hasan\",\n    \"userRole\" : \"Exporter Admin\",\n    \"userOrg\" : \"Importer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/createUser",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userID\" : \"user1\",\n    \"userStatus\" : \"Active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/changeUserStatus",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"changeUserStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Readuser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userID\" : \"user1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/readUser",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"readUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "create product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productID\" : \"prod1\",\n    \"productType\" : \"Agri\",\n    \"productQuantity\" : \"100KG\",\n    \"price\" : \"100$\",\n    \"productionDate\" : \"12/12/21\",\n    \"exporterID\" : \"user1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/createProduct",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"createProduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productID\" : \"prod1\",\n    \"status\" : \"Active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/changeProductStatus",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"changeProductStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product importer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productID\" : \"prod1\",\n    \"importerID\" : \"5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateProductImporter",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateProductImporter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productID\" : \"prod1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/readProduct",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"readProduct"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Certificate",
+			"item": [
+				{
+					"name": "create certificate",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"certificateID\" : \"Cert1\",\n    \"ownerName\" : \"Prateek Anand\",\n    \"plotRegNo\" : \"JAY-1-0568X-2020–21\",\n    \"inspectionReportNumber\" : \"GRA993990\",\n    \"dateOfInspection\" : \"26/04/2023\",\n    \"verification_of_spray_records\" : \"yes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/createCertificate",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"createCertificate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update certificate status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"certificateID\" : \"Cert1\",\n    \"status\": \"Active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateCertStatus",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateCertStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read certificate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"certificateID\" : \"Cert1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/readCertificate",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"readCertificate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delivery Details",
+			"item": [
+				{
+					"name": "create delivery details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"productID\" : \"prod1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/createdelivery",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"createdelivery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update delivery Status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"status\" : \"Active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateTransportation",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateTransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update delivery transportation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"transportationMode\" : \"truck xx-xx-xx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateTransportation",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateTransportation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update shipment date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"shipmentDate\" : \"12/12/23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateShipmentDate",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateShipmentDate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update delivery date",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"deliveryDate\" : \"12/12/23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateDeliveryDate",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateDeliveryDate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update current location",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\",\n    \"currentLocation\" : \"Exporter warehouse\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/updateCurrentLocation",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"updateCurrentLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read Delivery",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deliveryID\" : \"Delivery1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/readDelivery",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"readDelivery"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

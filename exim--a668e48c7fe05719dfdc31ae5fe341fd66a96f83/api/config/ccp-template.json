@@ -1,0 +1,52 @@
+{
+    "name": "org-${ORG}",
+    "version": "1.0.0",
+    "client": {
+        "organization": "${ORG}",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300000"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "${ORG}": {
+            "mspid": "${MSP}",
+            "peers": [
+                "peer0.${ORG}.exim.com"
+            ],
+            "certificateAuthorities": [
+                "ca-${ORG}"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.${ORG}.exim.com": {
+            "url": "grpcs://localhost:${P0PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.${ORG}.exim.com",
+                "hostnameOverride": "peer0.${ORG}.exim.com"
+            }
+        }
+
+	
+    },
+    "certificateAuthorities": {
+        "ca-${ORG}": {
+            "url": "https://localhost:${CAPORT}",
+            "caName": "ca-${ORG}",
+            "timeout": "30000000",
+            "tlsCACerts": {
+                "pem": "${CAPEM}"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

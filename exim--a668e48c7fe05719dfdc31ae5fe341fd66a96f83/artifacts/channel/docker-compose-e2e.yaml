@@ -1,0 +1,61 @@
+version: '2'
+
+volumes:
+      orderer1.exim.com:
+      orderer2.exim.com:
+      orderer3.exim.com:
+      peer0.exporter.exim.com:
+      peer0.importer.exim.com:
+      peer0.eximbusiness.exim.com:
+
+networks:
+      exim:
+      
+services:
+      orderer1.exim.com:
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: orderer1.exim.com
+            container_name: orderer1.exim.com
+            networks:
+                  - exim
+
+      orderer2.exim.com:
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: orderer2.exim.com
+            container_name: orderer2.exim.com
+            networks:
+                  - exim
+      
+      orderer3.exim.com:
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: orderer3.exim.com
+            container_name: orderer3.exim.com
+            networks:
+                  - exim
+      
+      peer0.exporter.exim.com:
+            container_name: peer0.exporter.exim.com
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: peer0.exporter.exim.com
+            networks:
+                  - exim
+
+      peer0.importer.exim.com:
+            container_name: peer0.importer.exim.com
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: peer0.importer.exim.com
+            networks:
+                  - exim
+      
+      peer0.eximbusiness.exim.com:
+            container_name: peer0.eximbusiness.exim.com
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: peer0.eximbusiness.exim.com
+            networks:
+                  - exim

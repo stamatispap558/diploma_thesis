@@ -1,0 +1,249 @@
+Organizations:
+  - &EximOrdererOrg
+
+    Name: EximOrdererOrg
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/exim.com/msp
+
+    Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Writers:
+          Type: Signature
+          Rule: "OR('OrdererMSP.member')"
+        Admins:
+          Type: Signature
+          Rule: "OR('OrdererMSP.admin')"
+    
+    OrdererEndpoints:
+      - Orderer1.exim.com:7050
+      - Orderer2.exim.com:7050
+      - Orderer3.exim.com:7050
+  
+  - &ExporterOrg
+  
+    Name: Exporter
+    ID: ExporterMSP
+
+    MSPDir: crypto-config/peerOrganizations/exporter.exim.com/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('ExporterMSP.admin', 'ExporterMSP.peer', 'ExporterMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('ExporterMSP.admin', 'ExporterMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('ExporterMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('ExporterMSP.peer')"
+    
+    AnchorPeers:
+      - Host: peer0.exporter.exim.com
+        Port: 7051
+  
+  - &ImoprterOrg
+    Name: Importer
+    ID: ImporterMSP
+
+    MSPDir: crypto-config/peerOrganizations/importer.exim.com/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('ImporterMSP.admin', 'ImporterMSP.peer', 'ImporterMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('ImporterMSP.admin', 'ImporterMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('ImporterMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('ImporterMSP.peer')"
+    
+    AnchorPeers:
+      - Host: peer0.importer.exim.com
+        Port: 8051
+
+  - &EximBusiness
+    Name: EximBusiness
+    ID: EximBusinessMSP
+
+    MSPDir: crypto-config/peerOrganizations/eximbusiness.exim.com/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule : "OR('EximBusinessMSP.admin', 'EximBusinessMSP.peer', 'EximBusinessMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('EximBusinessMSP.admin', 'EximBusinessMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('EximBusinessMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('EximBusinessMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.eximbusiness.exim.com
+        Port: 9051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+
+Application: &ApplicationDefaults
+  Organizations:
+
+  Policies: 
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifeCycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement	:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  
+  Capabilities:
+    <<: *ApplicationCapabilities
+  
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.exim.com
+        Port: 7050
+        ClientTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/tls/server.crt
+        ServerTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/tls/server.crt
+
+  BatchTimeout: 2s
+
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  
+  Organizations:
+  
+  Policies:
+    Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+    Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+    Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    BlockValidation:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+
+  ThreeOrgsEximOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *EximOrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      MarketplaceConsortium:
+        Organizations:
+          - *ExporterOrg
+          - *ImoprterOrg
+          - *EximBusiness
+
+
+  ThreeOrgsMarketplaceChannel:
+    Consortium: MarketplaceConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *ExporterOrg
+        - *ImoprterOrg
+        - *EximBusiness
+      Capabilities:
+        <<: *ApplicationCapabilities
+
+  EximMultiNodeEtcdRaft:
+    <<: *ChannelDefaults
+    Capabilities:
+      <<: *ChannelCapabilities
+    Orderer:
+      <<: *OrdererDefaults
+      OrdererType: etcdraft
+      EtcdRaft:
+        Consenters:
+          - Host: orderer1.exim.com
+            Port: 7050
+            ClientTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/tls/server.crt
+            ServerTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/tls/server.crt
+          - Host: orderer2.exim.com
+            Port: 7050
+            ClientTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer2.exim.com/tls/server.crt
+            ServerTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer2.exim.com/tls/server.crt
+          - Host: orderer3.exim.com
+            Port: 7050
+            ClientTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer3.exim.com/tls/server.crt
+            ServerTLSCert: crypto-config/ordererOrganizations/exim.com/orderers/orderer3.exim.com/tls/server.crt
+
+      Addresses:
+        - orderer1.exim.com:7050
+        - orderer2.exim.com:7050
+        - orderer3.exim.com:7050
+      
+      Organizations:
+        - *EximOrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *EximOrdererOrg
+    Consortiums:
+      MarketplaceConsortium:
+        Organizations:
+          - *ExporterOrg
+          - *ImoprterOrg
+          - *EximBusiness
+

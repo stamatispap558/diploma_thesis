@@ -1,0 +1,33 @@
+version: '2'
+
+networks:
+      exim:
+
+services:
+      cli:
+            container_name: exim_cli
+            image: hyperledger/fabric-tools:$IMAGE_TAG
+            stdin_open: true
+            environment:
+                  - SYS_CHANNEL=$SYS_CHANNEL
+                  - GOPATH=/opt/gopath
+                  - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+                  - FABRIC_LOGGING_SPEC=INFO
+                  - CORE_PEER_ID=cli
+                  - CORE_PEER_ADDRESS=peer0.exporter.exim.com:7051
+                  - CORE_PEER_LOCALMSPID=ExporterMSP
+                  - CORE_PEER_TLS_ENABLED=true
+                  - CORE_PEER_TLS_CERTFILE=opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/exporter.exim.com/peers/peer0.exporter.exim.com/tls/server.crt
+                  - CORE_PEER_TLS_KEYFILE=opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/exporter.exim.com/peers/peer0.exporter.exim.com/tls/server.key
+                  - CORE_PEER_TLS_ROOTCERT_FILE=opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/exporter.exim.com/peers/peer0.exporter.exim.com/tls/ca.crt
+                  - CORE_PEER_MSPCONFIGPATH=opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/exporter.exim.com/users/Admin@exporter.exim.com/msp
+            working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+            command: /bin/bash
+            volumes:
+                  - /var/run:/host/var/run
+                  - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/
+                  - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
+                  - ./cli_scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+                  - ../../chaincode:/opt/gopath/src/github.com/hyperledger/fabric/peer/contracts/
+            networks:
+                  - exim

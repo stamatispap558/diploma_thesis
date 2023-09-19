@@ -1,0 +1,109 @@
+version: '2'
+
+
+
+services:
+      orderer1.exim.com:
+            container_name: orderer1.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: orderer-base
+            volumes:
+                  - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/msp:/var/hyperledger/orderer/msp
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer1.exim.com/tls/:/var/hyperledger/orderer/tls
+                  - orderer1.exim.com:/var/hyperledger/production/orderer
+            ports:
+                  - "7050:7050"
+
+      orderer2.exim.com:
+            container_name: orderer2.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: orderer-base
+            volumes:
+                  - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer2.exim.com/msp:/var/hyperledger/orderer/msp
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer2.exim.com/tls/:/var/hyperledger/orderer/tls
+                  - orderer2.exim.com:/var/hyperledger/production/orderer
+            ports:
+                  - "8050:7050"
+      
+      orderer3.exim.com:
+            container_name: orderer3.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: orderer-base
+            volumes:
+                  - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer3.exim.com/msp:/var/hyperledger/orderer/msp
+                  - ../crypto-config/ordererOrganizations/exim.com/orderers/orderer3.exim.com/tls/:/var/hyperledger/orderer/tls
+                  - orderer3.exim.com:/var/hyperledger/production/orderer
+            ports:
+                  - "9050:7050"
+
+      peer0.exporter.exim.com:
+            container_name: peer0.exporter.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: peer-base
+            environment:
+                  - CORE_PEER_ID=peer0.exporter.exim.com
+                  - CORE_PEER_ADDRESS=peer0.exporter.exim.com:7051
+                  - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+                  - CORE_PEER_CHAINCODEADDRESS=peer0.exporter.exim.com:7052
+                  - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+                  - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.exporter.exim.com:7051
+                  - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.exporter.exim.com:7051
+                  - CORE_PEER_LOCALMSPID=ExporterMSP
+            volumes:
+                  - $UNIX_SOCK:/host/var/run/docker.sock
+                  - ../crypto-config/peerOrganizations/exporter.exim.com/peers/peer0.exporter.exim.com/msp:/etc/hyperledger/fabric/msp
+                  - ../crypto-config/peerOrganizations/exporter.exim.com/peers/peer0.exporter.exim.com/tls:/etc/hyperledger/fabric/tls
+                  - peer0.exporter.exim.com:/var/hyperledger/production
+            ports:
+                  - "7051:7051"
+
+      peer0.importer.exim.com:
+            container_name: peer0.importer.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: peer-base
+            environment:
+                  - CORE_PEER_ID=peer0.importer.exim.com
+                  - CORE_PEER_ADDRESS=peer0.importer.exim.com:8051
+                  - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+                  - CORE_PEER_CHAINCODEADDRESS=peer0.importer.exim.com:8052
+                  - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+                  - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.importer.exim.com:8051
+                  - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.importer.exim.com:8051
+                  - CORE_PEER_LOCALMSPID=ImporterMSP
+            volumes:
+                  - $UNIX_SOCK:/host/var/run/docker.sock
+                  - ../crypto-config/peerOrganizations/importer.exim.com/peers/peer0.importer.exim.com/msp:/etc/hyperledger/fabric/msp
+                  - ../crypto-config/peerOrganizations/importer.exim.com/peers/peer0.importer.exim.com/tls:/etc/hyperledger/fabric/tls
+                  - peer0.importer.exim.com:/var/hyperledger/production
+            ports:
+                  - "8051:8051"
+
+      peer0.eximbusiness.exim.com:
+            container_name: peer0.eximbusiness.exim.com
+            extends:
+                  file: peer-base.yaml
+                  service: peer-base
+            environment:
+                  - CORE_PEER_ID=peer0.eximbusiness.exim.com
+                  - CORE_PEER_ADDRESS=peer0.eximbusiness.exim.com:9051
+                  - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+                  - CORE_PEER_CHAINCODEADDRESS=peer0.eximbusiness.exim.com:9052
+                  - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+                  - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.eximbusiness.exim.com:9051
+                  - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.eximbusiness.exim.com:9051
+                  - CORE_PEER_LOCALMSPID=EximBusinessMSP
+            volumes:
+                  - $UNIX_SOCK:/host/var/run/docker.sock
+                  - ../crypto-config/peerOrganizations/eximbusiness.exim.com/peers/peer0.eximbusiness.exim.com/msp:/etc/hyperledger/fabric/msp
+                  - ../crypto-config/peerOrganizations/eximbusiness.exim.com/peers/peer0.eximbusiness.exim.com/tls:/etc/hyperledger/fabric/tls
+                  - peer0.eximbusiness.exim.com:/var/hyperledger/production
+            ports:
+                  - "9051:9051"

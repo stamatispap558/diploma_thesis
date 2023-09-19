@@ -1,0 +1,69 @@
+version: '2.2'
+
+networks:
+      exim:
+
+services:
+      ca_exporter:
+            image: hyperledger/fabric-ca
+            environment:
+                  - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+                  - FABRIC_CA_SERVER_CA_NAME=ca-exporter
+                  - FABRIC_CA_SERVER_TLS_ENABLED=true
+                  - FABRIC_CA_SERVER_PORT=7054
+            ports:
+                  - "7054:7054"
+            command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+            volumes:
+                  - ./fabric-ca/peerOrganizations/exporter.exim.com:/etc/hyperledger/fabric-ca-server
+            container_name: ca_exporter
+            networks:
+                  - exim
+
+      ca_importer:
+            image: hyperledger/fabric-ca
+            environment:
+                  - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+                  - FABRIC_CA_SERVER_CA_NAME=ca-importer
+                  - FABRIC_CA_SERVER_TLS_ENABLED=true
+                  - FABRIC_CA_SERVER_PORT=8054
+            ports:
+                  - "8054:8054"
+            command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+            volumes:
+                  - ./fabric-ca/peerOrganizations/importer.exim.com:/etc/hyperledger/fabric-ca-server
+            container_name: ca_importer
+            networks:
+                  - exim
+
+      ca_eximbusiness:
+            image: hyperledger/fabric-ca
+            environment:
+                  - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+                  - FABRIC_CA_SERVER_CA_NAME=ca-eximbusiness
+                  - FABRIC_CA_SERVER_TLS_ENABLED=true
+                  - FABRIC_CA_SERVER_PORT=9054
+            ports:
+                  - "9054:9054"
+            command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+            volumes:
+                  - ./fabric-ca/peerOrganizations/eximbusiness.exim.com:/etc/hyperledger/fabric-ca-server
+            container_name: ca_eximbusiness
+            networks:
+                  - exim
+
+      ca_orderer:
+            image: hyperledger/fabric-ca
+            environment:
+                  - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+                  - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+                  - FABRIC_CA_SERVER_TLS_ENABLED=true
+                  - FABRIC_CA_SERVER_PORT=10054
+            ports:
+                  - "10054:10054"
+            command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+            volumes:
+                  - ./fabric-ca/ordererOrganizations/orderer.exim.com:/etc/hyperledger/fabric-ca-server
+            container_name: ca_orderer
+            networks:
+                  - exim
