@@ -7,11 +7,14 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import CategoryIcon from '@mui/icons-material/Category';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AddIcon from '@mui/icons-material/Add';
-import SettingsIcon from '@mui/icons-material/Settings';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Link } from 'react-router-dom';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+
 
 export function MainListItems() {
 
@@ -29,12 +32,15 @@ export function MainListItems() {
 
   return (
     <React.Fragment>
-      <ListItemButton>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
+
+        <Link to="/dashboard">
+          <ListItemButton>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+        </Link>
 
         <ListItemButton onClick={handleProductsClick}>
           <ListItemIcon>
@@ -45,18 +51,34 @@ export function MainListItems() {
         </ListItemButton>
         <Collapse in={openProducts} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <AddIcon />
-              </ListItemIcon>
-              <ListItemText primary="Create Product" />
-            </ListItemButton>
-            <ListItemButton>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Update Product Status" />
-            </ListItemButton>
+
+            <Link to="/create-product">
+              <ListItemButton>
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Create Product" />
+              </ListItemButton>
+            </Link>
+
+            <Link to="/update-product">
+              <ListItemButton>
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Update Product Status" />
+              </ListItemButton>
+            </Link>
+
+            <Link to="/view-product">
+              <ListItemButton>
+                <ListItemIcon>
+                  <RemoveRedEyeIcon />
+                </ListItemIcon>
+                <ListItemText primary="View Product" />
+              </ListItemButton>
+            </Link>
+
           </List>
         </Collapse>
 
@@ -76,18 +98,70 @@ export function MainListItems() {
       </ListItemButton>
       <Collapse in={openDeliveries} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
+
+        <Link to="/create-delivery">
           <ListItemButton>
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
             <ListItemText primary="Create Delivery" />
           </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Update Delivery Status" />
-          </ListItemButton>
+        </Link>
+
+          <Link to="/update-delivery">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update Delivery Status" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/update-transport">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update Transport" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/update-shipment-date">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update Shipment" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/update-delivery-date">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update Delivery" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/update-location">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Update Location" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/view-delivery">
+              <ListItemButton>
+                <ListItemIcon>
+                  <RemoveRedEyeIcon />
+                </ListItemIcon>
+                <ListItemText primary="View Product" />
+              </ListItemButton>
+          </Link>
+
         </List>
       </Collapse>
 

@@ -17,10 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { MainListItems } from './listItems';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+import { MainListItems } from '../../Dashboard/listItems';
+import { Button, TextField } from '@mui/material';
+import swal from 'sweetalert';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -34,6 +34,7 @@ function Copyright(props) {
     </Typography>
   );
 }
+
 
 const drawerWidth = 240;
 
@@ -84,10 +85,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function UpdateProduct() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = {
+        productID: event.target.productid.value,
+        status: event.target.status.value
+    }
+
+    try {
+        const response = await axios.post('http://localhost:4000/changeProductStatus', formData);
+        swal("Success!", "Product Status Updated Successfully!", "success");
+    } catch (error) {
+        swal("Error!", " Product ID does not exist", "error");
+    }
   };
 
   return (
@@ -119,7 +136,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Update Product Status
             </Typography>
             <IconButton color="inherit">
               <Badge color="secondary">
@@ -167,41 +184,46 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                    autoComplete="productid"
+                    name="productid"
+                    required
+                    fullWidth
+                    id="productid"
+                    label="Product ID"
+                    autoFocus
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                    required
+                    fullWidth
+                    id="status"
+                    label="Product Status"
+                    name="status"
+                    autoComplete="status"
+                    />
+                </Grid>
+                {/* <Grid item xs={12}>
+                    <FormControlLabel
+                    control={<Checkbox value="allowExtraEmails" color="primary" />}
+                    label="I want to receive inspiration, marketing promotions and updates via email."
+                    />
+                </Grid> */}
+                </Grid>
+                <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
                 >
-                  {/* <Chart /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  {/* <Deposits /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {/* <Orders /> */}
-                </Paper>
-              </Grid>
-            </Grid>
-            {/* <Copyright sx={{ pt: 4 }} /> */}
+                Submit
+                </Button>
+
+            </Box>
           </Container>
         </Box>
       </Box>

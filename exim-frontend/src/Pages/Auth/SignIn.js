@@ -12,6 +12,9 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "axios";
+import swal from 'sweetalert';
+import bcrypt from 'bcryptjs';
 
 function Copyright(props) {
   return (
@@ -31,13 +34,21 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // const formData = {
+    //   userID: event.target.userid.value,
+    //   // password: event.target.password.value
+    // }
+
+    try {
+      const response = await axios.get('http://localhost:4000/readUser/' + event.target.userid.value);
+      console.log(response.data);
+      // redirect to dashboard
+      window.location.href = "/dashboard";
+    } catch (error) {
+      swal("Error!", "User id does exist", "error");
+    }
   };
 
   return (
@@ -79,10 +90,10 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="userid"
+                label="User ID:"
+                name="userid"
+                autoComplete="userid"
                 autoFocus
               />
               <TextField

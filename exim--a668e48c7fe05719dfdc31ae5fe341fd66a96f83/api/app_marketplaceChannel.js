@@ -16,6 +16,8 @@ const logger = log4js.getLogger('EximNetwork');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const { log } = require('console');
+const cors = require('cors');
+
 
 const host = process.env.HOST || constants.host;
 const port = process.env.PORT || constants.port;
@@ -25,6 +27,8 @@ const chaincodeName = 'marketplace';
 const ExporterOrgUserID = 'admin';
 
 app.use(bodyParser.json());
+app.use(cors());
+
 
 
 var server = http.createServer(app).listen(port, function () { console.log(`Server started on ${port}`) });
@@ -51,6 +55,10 @@ async function main() {
 
         const network = await gateway.getNetwork(channelName);
         const contract = await network.getContract(chaincodeName);
+
+        app.get('/', async function (req, res) {
+            res.send('Welcome to Exim Network');
+        });
         
         app.post('/createUser', async function (req, res) {
             //create user
@@ -71,17 +79,24 @@ async function main() {
         });
 
 
-        app.get('/readUser', async function (req, res) {
-            //read user
+        app.get('/readUser/:userID', async function (req, res) {
             try {
-                const { userID } = req.body;
-                let result = await contract.evaluateTransaction('readUser', userID);
+              const userID = req.params.userID; // Retrieve "userID" from route parameters
+          
+              // Assuming "contract" is your logic for fetching user data
+              let result = await contract.evaluateTransaction('readUser', userID);
+          
+              // Handle the result and send it in the response
+              if (result) {
                 res.send(result.toString());
-            }catch(error){
-                res.status(400).send(error.toString());
+              } else {
+                res.status(404).send('User not found');
+              }
+            } catch (error) {
+              res.status(500).send(error.toString());
             }
-        });
-
+          });
+          
         app.post('/changeUserStatus', async function (req, res) {
             //change user status
             try {
@@ -130,16 +145,36 @@ async function main() {
             }
         });
 
-        app.get('/readProduct', async function (req, res) {
-            //read product
+        // app.get('/readProduct', async function (req, res) {
+        //     //read product
+        //     try {
+        //         const { productID } = req.body;
+        //         let result = await contract.evaluateTransaction('readProduct', productID);
+        //         res.send(result.toString());
+        //     }catch(error){
+        //         res.status(400).send(error.toString());
+        //     }
+        // });
+
+
+        app.get('/readProduct/:productID', async function (req, res) {
             try {
-                const { productID } = req.body;
-                let result = await contract.evaluateTransaction('readProduct', productID);
+              const productID = req.params.productID; // Retrieve "productID" from route parameters
+          
+              // Assuming "contract" is your logic for fetching product data
+              let result = await contract.evaluateTransaction('readProduct', productID);
+          
+              // Handle the result and send it in the response
+              if (result) {
                 res.send(result.toString());
-            }catch(error){
-                res.status(400).send(error.toString());
+              } else {
+                res.status(404).send('Product not found');
+              }
+            } catch (error) {
+              res.status(500).send(error.toString());
             }
-        });
+          });
+          
 
         app.post('/createdelivery', async function (req, res) {
             //create delivery
@@ -235,16 +270,24 @@ async function main() {
             }
         });
 
-        app.get('/readDelivery', async function (req, res) {
-            //read delivery
+        app.get('/readDelivery/:deliveryID', async function (req, res) {
             try {
-                const { deliveryID } = req.body;
-                let result = await contract.evaluateTransaction('readDelivery', deliveryID);
+              const deliveryID = req.params.deliveryID; // Retrieve "deliveryID" from route parameters
+          
+              // Assuming "contract" is your logic for fetching delivery data
+              let result = await contract.evaluateTransaction('readDelivery', deliveryID);
+          
+              // Handle the result and send it in the response
+              if (result) {
                 res.send(result.toString());
-            }catch(error){
-                res.status(400).send(error.toString());
+              } else {
+                res.status(404).send('Delivery not found');
+              }
+            } catch (error) {
+              res.status(500).send(error.toString());
             }
-        });
+          });
+          
 
         app.get('/readCertificate', async function (req, res) {
             //read certificate

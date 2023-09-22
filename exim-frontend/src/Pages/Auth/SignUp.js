@@ -12,20 +12,42 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import axios from "axios";
+import axios from "axios";
+import swal from 'sweetalert';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-  };
 
+
+export default function SignUp() {
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = {
+      userID: event.target.userid.value,
+      userName: event.target.username.value,
+      userEmail: event.target.email.value,
+      userRole: "ex-im",
+      userOrg: event.target.userorg.value,
+      password: event.target.password.value
+    }
+
+    try {
+      const response = await axios.post('http://localhost:4000/createUser', formData);
+      swal("Success!", "User Created Successfully!", "success");
+      //wait 2 seconds
+      setTimeout(function () {
+        //re-direct to login page
+        window.location.href = "/";
+      }, 2000);
+      
+    } catch (error) {
+      swal("Error!", "User id exist", "error");
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>

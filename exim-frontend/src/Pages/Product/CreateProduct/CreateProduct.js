@@ -17,10 +17,10 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { MainListItems } from './listItems';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+import { MainListItems } from '../../Dashboard/listItems';
+import { Button, TextField } from '@mui/material';
+import swal from 'sweetalert';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -34,6 +34,7 @@ function Copyright(props) {
     </Typography>
   );
 }
+
 
 const drawerWidth = 240;
 
@@ -84,10 +85,33 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function CreateProduct() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
+  };
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = {
+        productID: event.target.productid.value,
+        productType: event.target.producttype.value,
+        productQuantity: event.target.productquantity.value,
+        price: event.target.price.value,
+        productionDate: event.target.productiondate.value,
+        exporterID: event.target.exporterid.value
+    }
+
+    
+
+    try {
+        const response = await axios.post('http://localhost:4000/createProduct', formData);
+        swal("Success!", "Product Created Successfully!", "success");
+
+    } catch (error) {
+        swal("Error!", " id exist", "error");
+    }
   };
 
   return (
@@ -119,7 +143,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Create Product
             </Typography>
             <IconButton color="inherit">
               <Badge color="secondary">
@@ -167,41 +191,89 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                    autoComplete="productid"
+                    name="productid"
+                    required
+                    fullWidth
+                    id="productid"
+                    label="Product ID"
+                    autoFocus
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                    required
+                    fullWidth
+                    id="producttype"
+                    label="Product Type"
+                    name="producttype"
+                    autoComplete="producttype"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    id="productquantity"
+                    label="Product Quantity"
+                    name="productquantity"
+                    autoComplete="productquantity"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    name="price"
+                    label="Price"
+                    type="price"
+                    id="price"
+                    autoComplete="price"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    name="productiondate"
+                    label="Production Date"
+                    type="productiondate"
+                    id="productiondate"
+                    autoComplete="productiondate"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    name="exporterid"
+                    label="Exporter ID"
+                    type="exporterid"
+                    id="exporterid"
+                    autoComplete="exporterid"
+                    />
+                </Grid>
+                {/* <Grid item xs={12}>
+                    <FormControlLabel
+                    control={<Checkbox value="allowExtraEmails" color="primary" />}
+                    label="I want to receive inspiration, marketing promotions and updates via email."
+                    />
+                </Grid> */}
+                </Grid>
+                <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
                 >
-                  {/* <Chart /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  {/* <Deposits /> */}
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  {/* <Orders /> */}
-                </Paper>
-              </Grid>
-            </Grid>
-            {/* <Copyright sx={{ pt: 4 }} /> */}
+                Submit
+                </Button>
+
+            </Box>
           </Container>
         </Box>
       </Box>
