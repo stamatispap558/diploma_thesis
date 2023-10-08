@@ -17,6 +17,7 @@ verifyResult() {
 exporterorg_PORT=7051
 importerorg_PORT=8051
 eximbusinessorg_PORT=9051
+regulatororg_PORT=10051
 
 setOrganization() {
   if [[ $# -lt 1 ]]
@@ -44,6 +45,10 @@ setOrganization() {
   then
     MSP=EximBusinessMSP
     PORT=$eximbusinessorg_PORT
+  elif [[ "$ORG" == "regulator" ]]
+  then
+    MSP=RegulatorMSP
+    PORT=$regulatororg_PORT
   else
     echo "Unknown Org: "$ORG
     exit 1
@@ -83,6 +88,9 @@ installChaincode() {
     setOrganization eximbusiness
     peer lifecycle chaincode install ${CC_NAME}.tar.gz
     echo "===================== Chaincode is installed on peer0.eximbusiness ===================== "
+    setOrganization regulator
+    peer lifecycle chaincode install ${CC_NAME}.tar.gz
+    echo "===================== Chaincode is installed on peer0.regulator ===================== "
   fi
 }
 
@@ -129,6 +137,16 @@ approveForEximbusinessOrg() {
   echo "===================== Chaincode is approved for install on peer0.eximbusiness ===================== "
 }
 
+approveForRegulatorOrg() {
+  setOrganization regulator
+  set -x
+  peer lifecycle chaincode approveformyorg --ordererTLSHostnameOverride orderer1.exim.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name ${CC_NAME} --version ${VERSION} --package-id ${PACKAGE_ID} --sequence ${VERSION}
+  res=$?
+  set +x
+  # verifyResult $res "Chaincode installation on peer0.eximbusiness has Failed"
+  echo "===================== Chaincode is approved for install on peer0.regulator ===================== "
+}
+
 checkCommitReadiness() {
   setOrganization exporter
   peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE --name ${CC_NAME} --version ${VERSION} --sequence ${VERSION} --output json
@@ -149,6 +167,7 @@ commitChaincodeDefinition() {
     --peerAddresses peer0.exporter.exim.com:7051 --tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE \
     --peerAddresses peer0.importer.exim.com:8051 --tlsRootCertFiles $Importer_CORE_PEER_TLS_CERT \
     --peerAddresses peer0.eximbusiness.exim.com:9051 --tlsRootCertFiles $Eximbusiness_CORE_PEER_TLS_CERT \
+    --peerAddresses peer0.regulator.exim.com:10051 --tlsRootCertFiles $Regulator_CORE_PEER_TLS_CERT \
     --version ${VERSION} --sequence ${VERSION}
 
     res=$?
@@ -183,6 +202,7 @@ then
   CC_NAME="marketplace"
   Importer_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/importer.exim.com/peers/peer0.importer.exim.com/tls/ca.crt
   Eximbusiness_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/eximbusiness.exim.com/peers/peer0.eximbusiness.exim.com/tls/ca.crt
+  Regulator_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/regulator.exim.com/peers/peer0.regulator.exim.com/tls/ca.crt
   
 
   # packageChaincode
@@ -195,6 +215,8 @@ then
   approveForImporterOrg
   checkCommitReadiness
   approveForEximbusinessOrg
+  checkCommitReadiness
+  approveForRegulatorOrg
   checkCommitReadiness
   sleep 5
   commitChaincodeDefinition

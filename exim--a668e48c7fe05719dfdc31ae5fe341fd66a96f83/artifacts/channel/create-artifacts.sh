@@ -17,3 +17,5 @@ configtxgen -profile ThreeOrgsMarketplaceChannel -configPath . -outputAnchorPeer
 configtxgen -profile ThreeOrgsMarketplaceChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/marketplacechannel/ImporterOrgMSPanchors.tx -channelID marketplacechannel -asOrg Importer
 
 configtxgen -profile ThreeOrgsMarketplaceChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/marketplacechannel/EximBusinessOrgMSPanchors.tx -channelID marketplacechannel -asOrg EximBusiness
+
+configtxgen -profile ThreeOrgsMarketplaceChannel -configPath . -outputAnchorPeersUpdate ./channel-artifacts/marketplacechannel/RegulatorOrgMSPanchors.tx -channelID marketplacechannel -asOrg Regulator

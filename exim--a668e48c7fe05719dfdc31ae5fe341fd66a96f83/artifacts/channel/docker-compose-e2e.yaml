@@ -7,6 +7,7 @@ volumes:
       peer0.exporter.exim.com:
       peer0.importer.exim.com:
       peer0.eximbusiness.exim.com:
+      peer0.regulator.exim.com:
 
 networks:
       exim:
@@ -57,5 +58,13 @@ services:
             extends:
                   file: base/docker-compose-base.yaml
                   service: peer0.eximbusiness.exim.com
+            networks:
+                  - exim
+
+      peer0.regulator.exim.com:
+            container_name: peer0.regulator.exim.com
+            extends:
+                  file: base/docker-compose-base.yaml
+                  service: peer0.regulator.exim.com
             networks:
                   - exim

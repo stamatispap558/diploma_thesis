@@ -94,6 +94,30 @@ Organizations:
       - Host: peer0.eximbusiness.exim.com
         Port: 9051
 
+  - &Regulator
+    Name: Regulator
+    ID: RegulatorMSP
+
+    MSPDir: crypto-config/peerOrganizations/regulator.exim.com/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule : "OR('RegulatorMSP.admin', 'RegulatorMSP.peer', 'RegulatorMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('RegulatorMSP.admin', 'RegulatorMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('RegulatorMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('RegulatorMSP.peer')"
+
+    AnchorPeers:
+      - Host: peer0.regulator.exim.com
+        Port: 10051
+
 Capabilities:
   Channel: &ChannelCapabilities
     V2_0: true
@@ -190,6 +214,7 @@ Profiles:
           - *ExporterOrg
           - *ImoprterOrg
           - *EximBusiness
+          - *Regulator
 
 
   ThreeOrgsMarketplaceChannel:
@@ -201,6 +226,7 @@ Profiles:
         - *ExporterOrg
         - *ImoprterOrg
         - *EximBusiness
+        - *Regulator
       Capabilities:
         <<: *ApplicationCapabilities
 
@@ -246,4 +272,5 @@ Profiles:
           - *ExporterOrg
           - *ImoprterOrg
           - *EximBusiness
+          - *Regulator
 

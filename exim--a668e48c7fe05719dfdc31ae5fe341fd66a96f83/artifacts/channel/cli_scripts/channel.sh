@@ -20,6 +20,7 @@ verifyResult() {
 exporterorg_PORT=7051
 importerorg_PORT=8051
 eximbusinessorg_PORT=9051
+regulatororg_PORT=10051
 
 setEnvironment(){
   if [[ $# -lt 1 ]]
@@ -46,6 +47,10 @@ setEnvironment(){
   then
     MSP=EximBusinessMSP
     PORT=$eximbusinessorg_PORT
+  elif [[  "$ORG" == "regulator" ]]
+  then
+    MSP=RegulatorMSP
+    PORT=$regulatororg_PORT
   else
     echo "Unknown org: $ORG"
     exit 1
@@ -89,6 +94,11 @@ joinChannel(){
 
   setEnvironment ${ORG3}
   peer channel join -b ./${CHANNEL_NAME}.block
+
+  sleep $DELAY
+
+  setEnvironment ${ORG4}
+  peer channel join -b ./${CHANNEL_NAME}.block
   
 }
 
@@ -99,6 +109,8 @@ updateAnchorPeers(){
   peer channel update -o orderer1.exim.com:7050 -c ${CHANNEL_NAME} -f ../channel-artifacts/${CHANNEL_NAME}/${ORG2_MSP_ANCHORS} --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --connTimeout 320s
   setEnvironment ${ORG3}
   peer channel update -o orderer1.exim.com:7050 -c ${CHANNEL_NAME} -f ../channel-artifacts/${CHANNEL_NAME}/${ORG3_MSP_ANCHORS} --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --connTimeout 320s
+  setEnvironment ${ORG4}
+  peer channel update -o orderer1.exim.com:7050 -c ${CHANNEL_NAME} -f ../channel-artifacts/${CHANNEL_NAME}/${ORG4_MSP_ANCHORS} --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --connTimeout 320s
 }
 
 
@@ -111,10 +123,12 @@ then
   ORG1=exporter
   ORG2=importer
   ORG3=eximbusiness
+  ORG4=regulator
 
   ORG1_MSP_ANCHORS=ExporterOrgMSPanchors.tx
   ORG2_MSP_ANCHORS=ImporterOrgMSPanchors.tx
   ORG3_MSP_ANCHORS=EximBusinessOrgMSPanchors.tx
+  ORG4_MSP_ANCHORS=RegulatorOrgMSPanchors.tx
 
   
 
