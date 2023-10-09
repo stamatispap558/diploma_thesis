@@ -41,3 +41,12 @@ PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/eximbusiness.exi
 CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/eximbusiness.exim.com/ca/ca-eximbusiness-cert.pem
 
 echo "$(json_ccp $ORG $MSP $P0PORT $CAPORT $PEERPEM $CAPEM)" > connection-eximbusiness.json
+
+# ORG=regulator
+# MSP=RgulatorMSP
+# P0PORT=10051
+# CAPORT=11054
+# PEERPEM=../../artifacts/channel/crypto-config/peerOrganizations/regulator.exim.com/tlsca/tlsca-regulator-cert.pem
+# CAPEM=../../artifacts/channel/crypto-config/peerOrganizations/regulator.exim.com/ca/ca-regulator-cert.pem
+
+# echo "$(json_ccp $ORG $MSP $P0PORT $CAPORT $PEERPEM $CAPEM)" > connection-regulator.json

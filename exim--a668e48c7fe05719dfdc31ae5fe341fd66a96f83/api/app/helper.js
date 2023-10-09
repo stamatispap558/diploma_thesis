@@ -15,6 +15,8 @@ const getCCP = async (org) => {
         ccpPath=path.resolve(__dirname, '..', 'config', 'connection-importer.json');
     } else if (org=="eximbusiness") {
         ccpPath=path.resolve(__dirname, '..', 'config', 'connection-eximbusiness.json');
+    } else if (org=="regulator") {
+        ccpPath=path.resolve(__dirname, '..', 'config', 'connection-regulator.json');
     } else
         return null;
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
@@ -30,6 +32,8 @@ const getCaUrl = async (org, ccp) => {
         caUrl=ccp.certificateAuthorities['ca-importer'].url;
     } else if (org=="eximbusiness") {
         caUrl=ccp.certificateAuthorities['ca-eximbusiness'].url;
+    } else if (org=="regulator") {
+        caUrl=ccp.certificateAuthorities['ca-regulator'].url;
     } 
      else
         return null;
@@ -44,6 +48,8 @@ const getWalletPath = async (org) => {
         walletPath=path.join(process.cwd(), 'importer-wallet');
     } else if (org=="eximbusiness") {
         walletPath=path.join(process.cwd(), 'eximbusiness-wallet');
+    } else if (org=="regulator") {
+        walletPath=path.join(process.cwd(), 'regulator-wallet');
     }
     else
         return null
@@ -123,6 +129,15 @@ const getRegisteredUser = async (username, userOrg, affiliation) => {
             mspId: 'EximBusinessMSP',
             type: 'X.509',
         };
+    }  else if (userOrg == "regulator") {
+        x509Identity = {
+            credentials: {
+                certificate: enrollment.certificate,
+                privateKey: enrollment.key.toBytes(),
+            },
+            mspId: 'RegulatorMSP',
+            type: 'X.509',
+        };
     }
 
     await wallet.put(username, x509Identity);
@@ -200,6 +215,15 @@ const enrollAdmin = async (org, ccp) => {
                 mspId: 'EximBusinessMSP',
                 type: 'X.509',
             };
+        } else if (org == "regulator") {
+            x509Identity = {
+                credentials: {
+                    certificate: enrollment.certificate,
+                    privateKey: enrollment.key.toBytes(),
+                },
+                mspId: 'RegulatorMSP',
+                type: 'X.509',
+            };
         }
 
         await wallet.put('admin', x509Identity);
@@ -218,6 +242,8 @@ const getCaInfo = async (org, ccp) => {
         caInfo = ccp.certificateAuthorities['ca-importer'];
     } else if (org == "eximbusiness") {
         caInfo = ccp.certificateAuthorities['ca-eximbusiness'];
+    } else if (org == "regulator") {
+        caInfo = ccp.certificateAuthorities['ca-regulator'];
     }  
     else
         return null
