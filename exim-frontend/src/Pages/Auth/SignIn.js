@@ -43,7 +43,13 @@ export default function SignInSide() {
 
     try {
       const response = await axios.get('http://localhost:4000/readUser/' + event.target.userid.value);
-      console.log(response.data);
+      console.log(response.data.UserID);
+    
+      if(response.data.UserID === "regulator") {
+        window.location.href = "/regulator-dashboard";
+        return;
+      }
+      
       // redirect to dashboard
       window.location.href = "/dashboard";
     } catch (error) {

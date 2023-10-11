@@ -15,6 +15,9 @@ import UpdateShipment from "./Pages/Delivery/UpdateShipment/UpdateShipment";
 import UpdateDelivery from "./Pages/Delivery/UpdateDelivery/UpdateDelivery";
 import UpdateLocation from "./Pages/Delivery/UpdateLocation/UpdateLocation";
 import ViewDelivery from "./Pages/Delivery/ViewDelivery/ViewDelivery";
+import RegulatorDashboard from "./Pages/RegulatorDashboard/RegulatorDashboard";
+import ViewProductRegulator from "./Pages/ProductRegulator/ViewProduct/ViewProduct";
+import ViewDeliveryRegulator from "./Pages/DeliveryRegulator/ViewDelivery/ViewDeliveryRegulator";
 
 const App = () => (
   <ConfigProvider
@@ -43,6 +46,10 @@ const App = () => (
       <Route path="/update-delivery-status" element={<UpdateDeliveryStatus />} />
       <Route path="/update-location" element={<UpdateLocation />} />
       <Route path="/update-delivery-date" element={<UpdateDelivery />} />
+      <Route path="/regulator-dashboard" element={<RegulatorDashboard />} />
+      <Route path="/view-product-regulator" element={<ViewProductRegulator />} />
+      <Route path="/view-delivery-regulator" element={<ViewDeliveryRegulator />} />
+
       
       <Route path="/view-delivery" element={<ViewDelivery />} />
     </Routes>
