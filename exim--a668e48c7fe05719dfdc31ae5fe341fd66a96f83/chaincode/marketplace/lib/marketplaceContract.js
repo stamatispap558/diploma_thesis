@@ -63,8 +63,10 @@ class MarketplaceContract extends Contract {
             Price: price,
             ProductionDate: productionDate,
             ExporterID: exporterID,
+            BusinessID: "Created",
             ImporterID: "Created",
-            Status: "Created"
+            Status: "Created",
+            newPrice: "-----"
         };
 
         await ctx.stub.putState(productID, Buffer.from(JSON.stringify(product)));
@@ -76,15 +78,19 @@ class MarketplaceContract extends Contract {
         return product && product.length > 0;
     }
 
-    async changeProductStatus(ctx, productID, status) {
+    async changeProductStatus(ctx, productID, status, NewPrice, Price) {
+        console.log(productID)
         const findProduct = await this.IsProductExist(ctx, productID);
         if (!findProduct) {
             throw new Error(`Product ${productID} does not exist`);
         }
         const product = await this.readProduct(ctx, productID);
         product.Status = status;
+        product.newPrice = NewPrice;
+        product.Price = Price;
         await ctx.stub.putState(productID, Buffer.from(JSON.stringify(product)));
         return JSON.stringify(product);
+        return 'hello world';
     }
 
     async readProduct(ctx, productID) {
@@ -113,7 +119,7 @@ class MarketplaceContract extends Contract {
     async CreateDeliveryDetails(ctx, deliveryID, productID) {
         const findDelivery = await this.IsDeliveryExist(ctx, deliveryID);
         if (findDelivery) {
-            throw new Error(`Delivery ${deliveryID} already exist`);
+            throw new Error(`Delivery ${deliveryID} already exist`);33
         }
         const findProduct = await this.IsProductExist(ctx, productID);
         if (!findProduct) {

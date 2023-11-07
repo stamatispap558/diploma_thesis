@@ -54,7 +54,7 @@ async function main() {
         });
 
         const network = await gateway.getNetwork(channelName);
-        const contract = await network.getContract(chaincodeName);
+        const contract = network.getContract(chaincodeName);
 
         app.get('/', async function (req, res) {
             res.send('Welcome to Exim Network');
@@ -124,12 +124,18 @@ async function main() {
         app.post('/changeProductStatus', async function (req, res) {
             //change product status
             try {
-                const { productID, status } = req.body;
-                let result = await contract.evaluateTransaction('changeProductStatus', productID, status);
-                await contract.submitTransaction('changeProductStatus', productID, status);
+                console.log('data ',  req);
+
+                const { productID, status, NewPrice, Price } = req.body;
+                // console.log(productID, status, NewPrice)
+                await contract.evaluateTransaction('changeProductStatus', productID, status, NewPrice, Price);
+                // // console.log("Entered 2", result)
+                let result = await contract.submitTransaction('changeProductStatus', productID, status, NewPrice, Price);
                 res.send(result.toString());
             }catch(error){
-                res.status(400).send(error.toString());
+                console.log('error', error);
+                // console.log("Error occurred:", error.message); 
+                // res.status(400).send(error.toString());
             }
         });
 

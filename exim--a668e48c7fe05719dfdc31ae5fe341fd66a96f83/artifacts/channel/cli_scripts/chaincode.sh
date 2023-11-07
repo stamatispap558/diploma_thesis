@@ -198,14 +198,14 @@ chaincodeInvokeInit() {
 if [ "$1" == "c" ]
 then
   CHANNEL_NAME="marketplacechannel"
-  CC_SRC_PATH="../../../chaincode/marketplace/"
+  CC_SRC_PATH="../contracts/marketplace/"
   CC_NAME="marketplace"
   Importer_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/importer.exim.com/peers/peer0.importer.exim.com/tls/ca.crt
   Eximbusiness_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/eximbusiness.exim.com/peers/peer0.eximbusiness.exim.com/tls/ca.crt
   Regulator_CORE_PEER_TLS_CERT=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/regulator.exim.com/peers/peer0.regulator.exim.com/tls/ca.crt
   
 
-  # packageChaincode
+  packageChaincode
 
   installChaincode
   queryInstalled

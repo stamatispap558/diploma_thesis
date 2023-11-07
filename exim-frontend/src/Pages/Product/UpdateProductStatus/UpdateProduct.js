@@ -94,14 +94,34 @@ export default function UpdateProduct() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+  let initialPrice;
+
+  try {
+      const response1 = await axios.get('http://localhost:4000/readProduct/' + event.target.productid.value)
+
+      if (response1.data.newPrice !== "-----") {
+        initialPrice = response1.data.newPrice;
+      } else {
+        initialPrice = response1.data.Price;
+      }
+
+  } catch (error) {
+      console.log("error");
+  }
+
     const formData = {
+        Price: initialPrice,
         productID: event.target.productid.value,
-        status: event.target.status.value
+        status: event.target.status.value,
+        NewPrice: event.target.productpricenew.value
     }
+
+
 
     try {
         const response = await axios.post('http://localhost:4000/changeProductStatus', formData);
         swal("Success!", "Product Status Updated Successfully!", "success");
+        
     } catch (error) {
         swal("Error!", " Product ID does not exist", "error");
     }
@@ -213,12 +233,22 @@ export default function UpdateProduct() {
                     label="I want to receive inspiration, marketing promotions and updates via email."
                     />
                 </Grid> */}
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    id="productpricenew"
+                    label="Product Price New"
+                    name="productpricenew"
+                    autoComplete="productpricenew"
+                    />
+                </Grid>
                 </Grid>
                 <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 4, mb: 2 }}
                 >
                 Submit
                 </Button>
