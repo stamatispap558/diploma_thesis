@@ -252,6 +252,59 @@ class MarketplaceContract extends Contract {
         }
         return JSON.parse(certificateJSON.toString());
     }
+
+    async FillNumberOfPackages(ctx, productID, numberOfPackages) {
+        const product = await this.readProduct(ctx, productID);
+        // console.log(numberOfPackages, product.productQuantity, "upcomingvalues")
+        // Check if there is enough stock
+        if (product.ProductQuantity < numberOfPackages) {
+            // Trigger notifications to the back of the chain
+            // You may use events or external notification services here
+            console.log(`Understock for product ${productID}. Notify the back of the chain.`);
+        } else {
+            // Proceed with the delivery
+            // Update product details and delivery status
+            product.ProductQuantity -= numberOfPackages;
+            await ctx.stub.putState(productID, Buffer.from(JSON.stringify(product)));
+    
+            // Add any other relevant logic for the delivery process
+        }
+    }
+    
+    // It's a monitoring mechanism to proactively check for understock conditions and notify relevant parties if needed.
+    async CheckStockAndNotify(ctx, productID) {
+        // Add logic to check if there is understock
+        // If understock, trigger notifications to the back of the chain
+        // You can use events or external notification services for this
+
+        // Check if the product with the given ID exists
+        const productAsBytes = await ctx.stub.getState(productID);
+        if (!productAsBytes || productAsBytes.length === 0) {
+            throw new Error(`Product with ID ${productID} does not exist`);
+        }
+
+        // Retrieve the existing product data
+        const product = JSON.parse(productAsBytes.toString());
+
+        // Check stock status
+        const currentStock = product.productQuantity;
+        const notifyThreshold = 100; // Set your threshold as needed
+
+        let stockStatus;
+        let message;
+        if (currentStock > notifyThreshold) {
+            stockStatus = 'Overstock';
+            message = `The remaining stock for product ${productID} is ${currentStock}.`;
+        } else if (currentStock <= notifyThreshold && currentStock > 0) {
+            stockStatus = 'Understock';
+            message = `There is understock for product ${productID}! Produce more packages.`;
+        } else {
+            stockStatus = 'Out of stock';
+            message = `Product ${productID} is out of stock.`;
+        }
+        return JSON.stringify({ stockStatus, message, currentStock });
+
+    }
     
 }
 

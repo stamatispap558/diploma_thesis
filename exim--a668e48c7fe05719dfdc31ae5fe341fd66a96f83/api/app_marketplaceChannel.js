@@ -318,6 +318,82 @@ async function main() {
             }
         });
 
+       
+        app.post('/fillNumberOfPackages', async function (req, res) {
+            try {
+                const { numberOfPackages, productID } = req.body;
+        
+                // Retrieve the current state of the ledger for the specific product
+                const productAsBytes = await contract.evaluateTransaction('readProduct', productID);
+                console.log(productAsBytes)
+                if (!productAsBytes || productAsBytes.length === 0) {
+                return res.status(404).json({
+                    error: `Product with ID ${productID} does not exist`,
+                });
+                }
+            
+                // Parse the product details from the response
+                const product = JSON.parse(productAsBytes.toString());
+                console.log(product)
+                // Access the product quantity
+                const currentQuantity = parseInt(product.ProductQuantity, 10);
+                console.log(currentQuantity, numberOfPackages, productID)
+                // Check if the operation was successful
+                if (currentQuantity < parseInt(numberOfPackages, 10)) {
+                // Set status to "Understock" and include remaining stock information
+                return res.status(200).json({
+                    status: 'Understock',
+                    message: "There is understock! Produce more packages.",
+                    remainingStock: 0, // Or calculate the correct remaining stock value
+                });
+                } else {
+                // If the operation was successful and there's no understock, respond with success
+                await contract.submitTransaction('FillNumberOfPackages', productID, numberOfPackages);
+            
+                return res.status(200).json({
+                    status: 'Success',
+                    message: "Number of Packages Filled Successfully!",
+                    remainingStock: currentQuantity - numberOfPackages,
+                });
+                }
+            } catch (error) {
+                // Handle other errors
+                console.error('Error in fillNumberOfPackages route:', error);
+                return res.status(500).json({
+                status: 'Error',
+                error: 'Internal Server Error',
+                });
+            }
+            });
+
+          app.get('/checkStockAndNotify/:productID', async function (req, res) {
+            try {
+                const { productID } = req.params;
+        
+                // Evaluate the smart contract transaction
+                const resultBuffer = await contract.evaluateTransaction('CheckStockAndNotify', productID);
+                const result = JSON.parse(resultBuffer.toString());
+        
+                // Extract properties from the smart contract result
+                const { stockStatus, message, remainingStock } = result;
+        
+                // Customize the API response based on stock status
+                if (stockStatus === 'Overstock') {
+                    res.status(200).json({ status: 'success', stockStatus, message, remainingStock });
+                } else if (stockStatus === 'Understock') {
+                    res.status(200).json({ status: 'warning', stockStatus, message, remainingStock });
+                } else {
+                    res.status(200).json({ status: 'info', stockStatus, message, remainingStock });
+                }
+            } catch (error) {
+                console.error('Error in checkStockAndNotify route:', error);
+                res.status(500).json({ status: 'error', error: 'Internal Server Error' });
+            }
+        });
+        
+
+        
+
     } catch(error) {
         console.log(error);
     }

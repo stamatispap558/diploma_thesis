@@ -42,6 +42,25 @@ export function MainListItems() {
           </ListItemButton>
         </Link>
 
+        {/* New Links */}
+        <Link to="/check-stock">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Check Stock and Notify" />
+            </ListItemButton>
+          </Link>
+
+          <Link to="/fill-packages">
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary="Fill Number of Packages" />
+            </ListItemButton>
+          </Link>
+
         <ListItemButton onClick={handleProductsClick}>
           <ListItemIcon>
             <CategoryIcon />
@@ -161,6 +180,8 @@ export function MainListItems() {
                 <ListItemText primary="View Product" />
               </ListItemButton>
           </Link>
+
+           
 
         </List>
       </Collapse>

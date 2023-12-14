@@ -18,7 +18,8 @@ import ViewDelivery from "./Pages/Delivery/ViewDelivery/ViewDelivery";
 import RegulatorDashboard from "./Pages/RegulatorDashboard/RegulatorDashboard";
 import ViewProductRegulator from "./Pages/ProductRegulator/ViewProduct/ViewProduct";
 import ViewDeliveryRegulator from "./Pages/DeliveryRegulator/ViewDelivery/ViewDeliveryRegulator";
-
+import FillNumberOfPackages  from "./Pages/User/FillNumberOfPackages";
+import CheckStockAndNotifyForm from "./Pages/Stock/CheckStockAndNotifyForm";
 const App = () => (
   <ConfigProvider
     theme={{
@@ -49,7 +50,8 @@ const App = () => (
       <Route path="/regulator-dashboard" element={<RegulatorDashboard />} />
       <Route path="/view-product-regulator" element={<ViewProductRegulator />} />
       <Route path="/view-delivery-regulator" element={<ViewDeliveryRegulator />} />
-
+      <Route path="/fill-packages" element={<FillNumberOfPackages />} />
+      <Route path="/check-stock" element={<CheckStockAndNotifyForm />} />
       
       <Route path="/view-delivery" element={<ViewDelivery />} />
     </Routes>
