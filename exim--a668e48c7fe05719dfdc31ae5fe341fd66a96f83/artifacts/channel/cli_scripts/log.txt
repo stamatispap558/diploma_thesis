@@ -1,2 +1,2 @@
 Installed chaincodes on peer:
-Package ID: marketplace_1:eb3cf2568bd7bdbd2875117a861450d35d87f2ceddf67a7d4f6952c1c0595fd7, Label: marketplace_1
+Package ID: marketplace_1:9ced7022c656bec38df0ec85c8ad73abe400b8309cd7118afee3a1bba2a1efa6, Label: marketplace_1

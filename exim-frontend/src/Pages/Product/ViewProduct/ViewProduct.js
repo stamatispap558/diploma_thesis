@@ -109,7 +109,7 @@ export default function ViewProduct() {
 
         swal({
             title: "Product Details",
-            text: "Product ID: " + response.data.ProductID + "\n" + "Product Type: " + response.data.ProductType + "\n" + "Product Quantity: " + response.data.ProductQuantity + "\n" + "Price: " + response.data.Price + "\n" + "Production Date: " + response.data.ProductionDate + "\n" + "Exporter ID: " + response.data.ExporterID+ "\n" + "New Price : " + response.data.newPrice,
+            text: "Product ID: " + response.data.ProductID + "\n" + "Product Type: " + response.data.ProductType + "\n" + "Product Quantity: " + response.data.ProductQuantity + "\n" + "Price: " + response.data.Price + "\n" + "Production Date: " + response.data.ProductionDate + "\n" + "Exporter ID: " + response.data.ExporterID+ "\n" + "New Packages: " + response.data.newNumberOfPackages,
             icon: "success",
             button: "Close",
             });

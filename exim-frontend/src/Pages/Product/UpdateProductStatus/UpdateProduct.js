@@ -94,15 +94,15 @@ export default function UpdateProduct() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-  let initialPrice;
+  let initialQuantity;
 
   try {
       const response1 = await axios.get('http://localhost:4000/readProduct/' + event.target.productid.value)
 
-      if (response1.data.newPrice !== "-----") {
-        initialPrice = response1.data.newPrice;
+      if (response1.data.NewNumberOfPackages !== "-----") {
+        initialQuantity = response1.data.newNumberOfPackages;
       } else {
-        initialPrice = response1.data.Price;
+        initialQuantity = response1.data.ProductQuantity;
       }
 
   } catch (error) {
@@ -110,10 +110,10 @@ export default function UpdateProduct() {
   }
 
     const formData = {
-        Price: initialPrice,
+        ProductQuantity: initialQuantity,
         productID: event.target.productid.value,
         status: event.target.status.value,
-        NewPrice: event.target.productpricenew.value
+        NewNumberOfPackages: event.target.newnumberofpackages.value
     }
 
 
@@ -237,10 +237,10 @@ export default function UpdateProduct() {
                     <TextField
                     required
                     fullWidth
-                    id="productpricenew"
-                    label="Product Price New"
-                    name="productpricenew"
-                    autoComplete="productpricenew"
+                    id="newnumberofpackages"
+                    label="New number of packages"
+                    name="newnumberofpackages"
+                    autoComplete="newnumberofpackages"
                     />
                 </Grid>
                 </Grid>

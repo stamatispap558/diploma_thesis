@@ -47,7 +47,7 @@ class MarketplaceContract extends Contract {
         return JSON.parse(userJSON.toString());
     }
 
-    async CreateProduct(ctx, productID, productType, productQuantity, price, productionDate, exporterID) {
+    async CreateProduct(ctx, productID, productType, productQuantity, price, productionDate, exporterID, intendedBusinessID) {
         const findProduct = await this.IsProductExist(ctx, productID);
         if (findProduct) {
             throw new Error(`Product ${productID} already exist`);
@@ -63,10 +63,10 @@ class MarketplaceContract extends Contract {
             Price: price,
             ProductionDate: productionDate,
             ExporterID: exporterID,
-            BusinessID: "Created",
+            IntendedBusinessID: intendedBusinessID,
             ImporterID: "Created",
             Status: "Created",
-            newPrice: "-----"
+            newNumberOfPackages: "-----"
         };
 
         await ctx.stub.putState(productID, Buffer.from(JSON.stringify(product)));
@@ -78,7 +78,7 @@ class MarketplaceContract extends Contract {
         return product && product.length > 0;
     }
 
-    async changeProductStatus(ctx, productID, status, NewPrice, Price) {
+    async changeProductStatus(ctx, productID, status, NewNumberOfPackages, ProductQuantity) {
         console.log(productID)
         const findProduct = await this.IsProductExist(ctx, productID);
         if (!findProduct) {
@@ -86,11 +86,11 @@ class MarketplaceContract extends Contract {
         }
         const product = await this.readProduct(ctx, productID);
         product.Status = status;
-        product.newPrice = NewPrice;
-        product.Price = Price;
+        product.newNumberOfPackages = NewNumberOfPackages;
+        product.ProductQuantity = ProductQuantity;
         await ctx.stub.putState(productID, Buffer.from(JSON.stringify(product)));
         return JSON.stringify(product);
-        return 'hello world';
+        
     }
 
     async readProduct(ctx, productID) {

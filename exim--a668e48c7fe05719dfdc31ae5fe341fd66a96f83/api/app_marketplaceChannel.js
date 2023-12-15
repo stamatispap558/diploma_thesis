@@ -112,30 +112,47 @@ async function main() {
         app.post('/createProduct', async function (req, res) {
             //create product
             try {
-                const { productID, productType, productQuantity, price, productionDate, exporterID } = req.body;
-                let result = await contract.evaluateTransaction('CreateProduct', productID, productType, productQuantity, price, productionDate, exporterID);
-                await contract.submitTransaction('CreateProduct', productID, productType, productQuantity, price, productionDate, exporterID);
+                const { productID, productType, productQuantity, price, productionDate, exporterID,  intendedBusinessID} = req.body;
+                const exporterExists = await checkUserExists(exporterID);
+                const importerExists = await checkUserExists(intendedBusinessID);
+        
+                if (!exporterExists || !importerExists) {
+                    res.status(400).send('Exporter or intended business does not exist.');
+                    return;
+                }
+                let result = await contract.evaluateTransaction('CreateProduct', productID, productType, productQuantity, price, productionDate, exporterID, intendedBusinessID);
+                await contract.submitTransaction('CreateProduct', productID, productType, productQuantity, price, productionDate, exporterID, intendedBusinessID);
                 res.send(result.toString());
             }catch(error){
                 res.status(400).send(error.toString());
             }
         });
 
+        async function checkUserExists(userID) {
+            try {
+                let result = await contract.evaluateTransaction('readUser', userID);
+                return result && result.length > 0;
+            } catch (error) {
+                console.error('Error checking if user exists:', error);
+                return false;
+            }
+        }
+
         app.post('/changeProductStatus', async function (req, res) {
             //change product status
             try {
                 console.log('data ',  req);
 
-                const { productID, status, NewPrice, Price } = req.body;
-                // console.log(productID, status, NewPrice)
-                await contract.evaluateTransaction('changeProductStatus', productID, status, NewPrice, Price);
-                // // console.log("Entered 2", result)
-                let result = await contract.submitTransaction('changeProductStatus', productID, status, NewPrice, Price);
+                const { productID, status, NewNumberOfPackages, ProductQuantity} = req.body;
+                console.log(productID, status, NewNumberOfPackages, ProductQuantity)
+                await contract.evaluateTransaction('changeProductStatus', productID, status, NewNumberOfPackages, ProductQuantity);
+                let result = await contract.submitTransaction('changeProductStatus', productID, status, NewNumberOfPackages, ProductQuantity);
+                console.log(result)
                 res.send(result.toString());
             }catch(error){
                 console.log('error', error);
-                // console.log("Error occurred:", error.message); 
-                // res.status(400).send(error.toString());
+                console.log("Error occurred:", error.message); 
+                //res.status(400).send(error.toString());
             }
         });
 
@@ -185,9 +202,9 @@ async function main() {
         app.post('/createdelivery', async function (req, res) {
             //create delivery
             try {
-                const { deliveryID, productID } = req.body;
-                let result = await contract.evaluateTransaction('CreateDeliveryDetails', deliveryID, productID);
-                await contract.submitTransaction('CreateDeliveryDetails', deliveryID, productID);
+                const { deliveryID, productID, exporterID, importerID } = req.body;
+                let result = await contract.evaluateTransaction('CreateDeliveryDetails', deliveryID, productID, exporterID, importerID);
+                await contract.submitTransaction('CreateDeliveryDetails', deliveryID, productID, exporterID, importerID);
                 res.send(result.toString());
             }catch(error){
                 res.status(400).send(error.toString());

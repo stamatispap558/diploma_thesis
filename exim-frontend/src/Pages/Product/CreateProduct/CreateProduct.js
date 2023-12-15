@@ -100,7 +100,8 @@ export default function CreateProduct() {
         productQuantity: event.target.productquantity.value,
         price: event.target.price.value,
         productionDate: event.target.productiondate.value,
-        exporterID: event.target.exporterid.value
+        exporterID: event.target.exporterid.value,
+        intendedBusinessID: event.target.businessid.value
     }
 
     
@@ -255,6 +256,17 @@ export default function CreateProduct() {
                     type="exporterid"
                     id="exporterid"
                     autoComplete="exporterid"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                    required
+                    fullWidth
+                    name="intendedbusinessid"
+                    label="Business ID"
+                    type="businessid"
+                    id="businessid"
+                    autoComplete="businessid"
                     />
                 </Grid>
                 {/* <Grid item xs={12}>
