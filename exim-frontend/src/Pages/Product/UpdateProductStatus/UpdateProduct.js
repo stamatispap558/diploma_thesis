@@ -99,7 +99,7 @@ export default function UpdateProduct() {
   try {
       const response1 = await axios.get('http://localhost:4000/readProduct/' + event.target.productid.value)
 
-      if (response1.data.NewNumberOfPackages !== "-----") {
+      if (response1.data.newNumberOfPackages !== "-----") {
         initialQuantity = response1.data.newNumberOfPackages;
       } else {
         initialQuantity = response1.data.ProductQuantity;
