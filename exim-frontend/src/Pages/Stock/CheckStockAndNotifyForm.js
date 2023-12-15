@@ -78,25 +78,17 @@ function CheckStockAndNotifyForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // Extract form data
-    const formData = {
-      // Extract your form fields here
-      // Add the necessary fields for checkStockAndNotify
-      productID: event.target.productID.value
-      // Add other fields as needed
-    };
-
     try {
       // Make an API call to check stock based on the productID
-      const response = await axios.get(`http://localhost:4000/checkStockAndNotify`, formData);
+      const response = await axios.get(`http://localhost:4000/checkStockAndNotify/` + event.target.productID.value);
       
       // Assuming the API response contains information about stock
       const stockInfo = response.data;
 
       // Display appropriate message based on stock information
-      if (stockInfo.overstock) {
+      if (stockInfo.stockStatus === 'Overstock') {
         swal("Overstock!", `The remaining stock is ${stockInfo.remainingStock}`, "warning");
-      } else if (stockInfo.understock) {
+      } else if (stockInfo.stockStatus === 'Understock') {
         swal("Understock!", "There is understock! Produce more packages.", "warning");
       } else {
         swal("Normal Stock", "Stock is within normal range.", "success");
