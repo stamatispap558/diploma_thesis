@@ -1,4 +1,1 @@
-# exim__
-# exim__
-# exim2
-# exim3
+# My diploma thesis related to exporter/importer processes (supply chain management)
