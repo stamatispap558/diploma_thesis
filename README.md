@@ -1,1 +1,3 @@
-# My diploma thesis related to exporter/importer processes (supply chain management)
+# diploma thesis 
+
+implementation of exporter/importer processes (supply chain management)
