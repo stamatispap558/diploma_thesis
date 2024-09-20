@@ -11,4 +11,6 @@ Run the project using the following commands:
 6. `npx nodemon app_marketplaceChannel.js` inside `api` folder to run the backend.
 7. `npm start` inside `exim-frontend` folder to run the frontend.
 
+In case the network is already up, we run `edown` first to bring down the network, `cl` to stop and remove the containers, and then steps 1 to 7.
+
 Ready to go!
