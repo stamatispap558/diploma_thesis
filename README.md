@@ -8,3 +8,7 @@ Run the project using the following commands:
 3. `cd scripts` inside the exim_cli.
 4. `./channel.sh cc` to create the channel.
 5. `./chaincode.sh c` to run the chaincode.
+6. `npx nodemon app_marketplaceChannel.js` inside `api` folder to run the backend.
+7. `npm start` inside `exim-frontend` folder to run the frontend.
+
+Ready to go!
